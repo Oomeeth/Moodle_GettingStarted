@@ -25,7 +25,7 @@
     ];
     ```
   - Ensure that `$plugin->requires` matches the version of your Moodle installation, which is located at the root directory within `version.php`.
-- Create a language file within `/theme/custom/lang/en/theme_photo.php`. The strings located within this file will be translated and displayed in our Moodle theme.
+- Create a language file within `/theme/custom/lang/en/theme_custom.php`. The strings located within this file will be translated and displayed in our Moodle theme.
   - Add the following code:
   ```
     <?php
@@ -35,9 +35,9 @@
     defined('MOODLE_INTERNAL') || die();                                                                                                
     
     // A description shown in the admin theme selector.                                                                                 
-    $string['choosereadme'] = 'Theme photo is a child theme of Boost. It adds the ability to upload background photos.';                
+    $string['choosereadme'] = 'Theme custom is a child theme of Boost. It adds the ability to upload background customs.';                
     // The name of our plugin.                                                                                                          
-    $string['pluginname'] = 'Photo';                                                                                                    
+    $string['pluginname'] = 'custom';                                                                                                    
     // We need to include a lang string for each block region.                                                                          
     $string['region-side-pre'] = 'Right';
   ```
@@ -57,7 +57,7 @@
     
     // The first setting we need is the name of the theme. This should be the last part of the component name, and the same             
     // as the directory name for our theme.                                                                                             
-    $THEME->name = 'photo';                                                                                                             
+    $THEME->name = 'custom';                                                                                                             
     
     // This setting list the style sheets we want to include in our theme. Because we want to use SCSS instead of CSS - we won't        
     // list any style sheets. If we did we would list the name of a file in the /style/ folder for our theme without any css file      
@@ -112,22 +112,22 @@
     if ($ADMIN->fulltree) {                                                                                                             
     
         // Boost provides a nice setting page which splits settings onto separate tabs. We want to use it here.                         
-        $settings = new theme_boost_admin_settingspage_tabs('themesettingphoto', get_string('configtitle', 'theme_photo'));             
+        $settings = new theme_boost_admin_settingspage_tabs('themesettingcustom', get_string('configtitle', 'theme_custom'));             
     
         // Each page is a tab - the first is the "General" tab.                                                                         
-        $page = new admin_settingpage('theme_photo_general', get_string('generalsettings', 'theme_photo'));                             
+        $page = new admin_settingpage('theme_custom_general', get_string('generalsettings', 'theme_custom'));                             
     
         // Replicate the preset setting from boost.                                                                                     
-        $name = 'theme_photo/preset';                                                                                                   
-        $title = get_string('preset', 'theme_photo');                                                                                   
-        $description = get_string('preset_desc', 'theme_photo');                                                                        
+        $name = 'theme_custom/preset';                                                                                                   
+        $title = get_string('preset', 'theme_custom');                                                                                   
+        $description = get_string('preset_desc', 'theme_custom');                                                                        
         $default = 'default.scss';                                                                                                      
     
         // We list files in our own file area to add to the drop down. We will provide our own function to                              
         // load all the presets from the correct paths.                                                                                 
         $context = context_system::instance();                                                                                          
         $fs = get_file_storage();                                                                                                       
-        $files = $fs->get_area_files($context->id, 'theme_photo', 'preset', 0, 'itemid, filepath, filename', false);                    
+        $files = $fs->get_area_files($context->id, 'theme_custom', 'preset', 0, 'itemid, filepath, filename', false);                    
     
         $choices = [];                                                                                                                  
         foreach ($files as $file) {                                                                                                     
@@ -142,9 +142,9 @@
         $page->add($setting);                                                                                                           
     
         // Preset files setting.                                                                                                        
-        $name = 'theme_photo/presetfiles';                                                                                              
-        $title = get_string('presetfiles','theme_photo');                                                                               
-        $description = get_string('presetfiles_desc', 'theme_photo');                                                                   
+        $name = 'theme_custom/presetfiles';                                                                                              
+        $title = get_string('presetfiles','theme_custom');                                                                               
+        $description = get_string('presetfiles_desc', 'theme_custom');                                                                   
     
         $setting = new admin_setting_configstoredfile($name, $title, $description, 'preset', 0,                                         
             array('maxfiles' => 20, 'accepted_types' => array('.scss')));                                                               
@@ -152,9 +152,9 @@
     
         // Variable $brand-color.                                                                                                       
         // We use an empty default value because the default colour should come from the preset.                                        
-        $name = 'theme_photo/brandcolor';                                                                                               
-        $title = get_string('brandcolor', 'theme_photo');                                                                               
-        $description = get_string('brandcolor_desc', 'theme_photo');                                                                    
+        $name = 'theme_custom/brandcolor';                                                                                               
+        $title = get_string('brandcolor', 'theme_custom');                                                                               
+        $description = get_string('brandcolor_desc', 'theme_custom');                                                                    
         $setting = new admin_setting_configcolourpicker($name, $title, $description, '');                                               
         $setting->set_updatedcallback('theme_reset_all_caches');                                                                        
         $page->add($setting);                                                                                                           
@@ -163,24 +163,24 @@
         $settings->add($page);                                                                                                          
     
         // Advanced settings.                                                                                                           
-        $page = new admin_settingpage('theme_photo_advanced', get_string('advancedsettings', 'theme_photo'));                           
+        $page = new admin_settingpage('theme_custom_advanced', get_string('advancedsettings', 'theme_custom'));                           
     
         // Raw SCSS to include before the content.                                                                                      
-        $setting = new admin_setting_configtextarea('theme_photo/scsspre',                                                              
-            get_string('rawscsspre', 'theme_photo'), get_string('rawscsspre_desc', 'theme_photo'), '', PARAM_RAW);                      
+        $setting = new admin_setting_configtextarea('theme_custom/scsspre',                                                              
+            get_string('rawscsspre', 'theme_custom'), get_string('rawscsspre_desc', 'theme_custom'), '', PARAM_RAW);                      
         $setting->set_updatedcallback('theme_reset_all_caches');                                                                        
         $page->add($setting);                                                                                                           
     
         // Raw SCSS to include after the content.                                                                                       
-        $setting = new admin_setting_configtextarea('theme_photo/scss', get_string('rawscss', 'theme_photo'),                           
-            get_string('rawscss_desc', 'theme_photo'), '', PARAM_RAW);                                                                  
+        $setting = new admin_setting_configtextarea('theme_custom/scss', get_string('rawscss', 'theme_custom'),                           
+            get_string('rawscss_desc', 'theme_custom'), '', PARAM_RAW);                                                                  
         $setting->set_updatedcallback('theme_reset_all_caches');                                                                        
         $page->add($setting);                                                                                                           
     
         $settings->add($page);                                                                                                          
     }
   ```
-- Replace `/theme/custom/lang/en/theme_photo.php` with the following code:
+- Replace `/theme/custom/lang/en/theme_custom.php` with the following code:
   ```
   <?php
     
@@ -195,13 +195,13 @@
     // The brand colour setting description.                                                                                            
     $string['brandcolor_desc'] = 'The accent colour.';     
     // A description shown in the admin theme selector.                                                                                 
-    $string['choosereadme'] = 'Theme photo is a child theme of Boost. It adds the ability to upload background photos.';                
+    $string['choosereadme'] = 'Theme custom is a child theme of Boost. It adds the ability to upload background customs.';                
     // Name of the settings pages.                                                                                                      
-    $string['configtitle'] = 'Photo settings';                                                                                          
+    $string['configtitle'] = 'custom settings';                                                                                          
     // Name of the first settings tab.                                                                                                  
     $string['generalsettings'] = 'General settings';                                                                                    
     // The name of our plugin.                                                                                                          
-    $string['pluginname'] = 'Photo';                                                                                                    
+    $string['pluginname'] = 'custom';                                                                                                    
     // Preset files setting.                                                                                                            
     $string['presetfiles'] = 'Additional theme preset files';                                                                           
     // Preset files help text.                                                                                                          
@@ -226,12 +226,12 @@
 // This is the function that returns the SCSS source for the main file in our theme. We override the boost version because          
 // we want to allow presets uploaded to our own theme file area to be selected in the preset list.                                  
 $THEME->scss = function($theme) {                                                                                                   
-    return theme_photo_get_main_scss_content($theme);                                                                               
+    return theme_custom_get_main_scss_content($theme);                                                                               
 };
 ```
 - Add the following to `/theme/custom/lib.php`:
 ```
-function theme_photo_get_main_scss_content($theme) {                                                                                
+function theme_custom_get_main_scss_content($theme) {                                                                                
     global $CFG;                                                                                                                    
  
     $scss = '';                                                                                                                     
@@ -246,8 +246,8 @@ function theme_photo_get_main_scss_content($theme) {
         // We still load the default preset files directly from the boost theme. No sense in duplicating them.                      
         $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/plain.scss');                                          
  
-    } else if ($filename && ($presetfile = $fs->get_file($context->id, 'theme_photo', 'preset', 0, '/', $filename))) {              
-        // This preset file was fetched from the file area for theme_photo and not theme_boost (see the line above).                
+    } else if ($filename && ($presetfile = $fs->get_file($context->id, 'theme_custom', 'preset', 0, '/', $filename))) {              
+        // This preset file was fetched from the file area for theme_custom and not theme_boost (see the line above).                
         $scss .= $presetfile->get_content();                                                                                        
     } else {                                                                                                                        
         // Safety fallback - maybe new installs etc.                                                                                
@@ -263,9 +263,9 @@ function theme_photo_get_main_scss_content($theme) {
 ```
 // Login page background setting.                                                                                               
 // We use variables for readability.                                                                                            
-$name = 'theme_photo/loginbackgroundimage';                                                                                     
-$title = get_string('loginbackgroundimage', 'theme_photo');                                                                     
-$description = get_string('loginbackgroundimage_desc', 'theme_photo');                                                          
+$name = 'theme_custom/loginbackgroundimage';                                                                                     
+$title = get_string('loginbackgroundimage', 'theme_custom');                                                                     
+$description = get_string('loginbackgroundimage_desc', 'theme_custom');                                                          
 // This creates the new setting.                                                                                                
 $setting = new admin_setting_configstoredfile($name, $title, $description, 'loginbackgroundimage');                             
 // This means that theme caches will automatically be cleared when this setting is changed.                                     
@@ -274,7 +274,7 @@ $setting->set_updatedcallback('theme_reset_all_caches');
 $page->add($setting);
 $settings->add($page);
 ```
-- Add the following to the end of `/theme/custom/lang/en/theme_photo.php`:
+- Add the following to the end of `/theme/custom/lang/en/theme_custom.php`:
 ```
 // Background image for login page.                                                                                                 
 $string['loginbackgroundimage'] = 'Login page background image';                                                                    
@@ -284,9 +284,9 @@ $string['loginbackgroundimage_desc'] = 'An image that will be stretched to fill 
 - We need to update the theme to set this image background on the login page. In `/theme/custom/lib.php`, replace `return $scss;` with the following:
 ```
 // Pre CSS - this is loaded AFTER any prescss from the setting but before the main scss.                                        
-$pre = file_get_contents($CFG->dirroot . '/theme/photo/scss/pre.scss');                                                         
+$pre = file_get_contents($CFG->dirroot . '/theme/custom/scss/pre.scss');                                                         
 // Post CSS - this is loaded AFTER the main scss but before the extra scss from the setting.                                    
-$post = file_get_contents($CFG->dirroot . '/theme/photo/scss/post.scss');                                                       
+$post = file_get_contents($CFG->dirroot . '/theme/custom/scss/post.scss');                                                       
  
 // Combine them together.                                                                                                       
 return $pre . "\n" . $scss . "\n" . $post;
@@ -295,16 +295,16 @@ return $pre . "\n" . $scss . "\n" . $post;
   - We need to be able to style our background image on the login page. Add the following code to `/theme/custom/scss/post.scss`:
   ```
     body.pagelayout-login {                                                                                                             
-    background-image: url([[pix:theme_photo|loginbackgroundimage]]);                                                                
+    background-image: url([[pix:theme_custom|loginbackgroundimage]]);                                                                
     background-size: cover;                                                                                                         
     }
   ```
 - Add the following to the end of `/theme/custom/lib.php` which will store our uploaded background image:
 ```
-function theme_photo_update_settings_images($settingname) {                                                                         
+function theme_custom_update_settings_images($settingname) {                                                                         
     global $CFG;                                                                                                                    
  
-    // The setting name that was updated comes as a string like 's_theme_photo_loginbackgroundimage'.                               
+    // The setting name that was updated comes as a string like 's_theme_custom_loginbackgroundimage'.                               
     // We split it on '_' characters.                                                                                               
     $parts = explode('_', $settingname);                                                                                            
     // And get the last one to get the setting name..                                                                               
@@ -313,7 +313,7 @@ function theme_photo_update_settings_images($settingname) {
     // Admin settings are stored in system context.                                                                                 
     $syscontext = context_system::instance();                                                                                       
     // This is the component name the setting is stored in.                                                                         
-    $component = 'theme_photo';                                                                                                     
+    $component = 'theme_custom';                                                                                                     
  
     // This is the value of the admin setting which is the filename of the uploaded file.                                           
     $filename = get_config($component, $settingname);                                                                               
@@ -328,13 +328,13 @@ function theme_photo_update_settings_images($settingname) {
     if ($file = $fs->get_file_by_hash(sha1($fullpath))) {                                                                           
         // We got the stored file - copy it to dataroot.                                                                            
         // This location matches the searched for location in theme_config::resolve_image_location.                                 
-        $pathname = $CFG->dataroot . '/pix_plugins/theme/photo/' . $settingname . '.' . $extension;                                 
+        $pathname = $CFG->dataroot . '/pix_plugins/theme/custom/' . $settingname . '.' . $extension;                                 
  
         // This pattern matches any previous files with maybe different file extensions.                                            
-        $pathpattern = $CFG->dataroot . '/pix_plugins/theme/photo/' . $settingname . '.*';                                          
+        $pathpattern = $CFG->dataroot . '/pix_plugins/theme/custom/' . $settingname . '.*';                                          
  
         // Make sure this dir exists.                                                                                               
-        @mkdir($CFG->dataroot . '/pix_plugins/theme/photo/', $CFG->directorypermissions, true);                                      
+        @mkdir($CFG->dataroot . '/pix_plugins/theme/custom/', $CFG->directorypermissions, true);                                      
  
         // Delete any existing files for this setting.                                                                              
         foreach (glob($pathpattern) as $filename) {                                                                                 
@@ -349,6 +349,6 @@ function theme_photo_update_settings_images($settingname) {
     theme_reset_all_caches();                                                                                                       
 }
 ```
-- Finally, replace the last method `$setting->set_updatedcallback('theme_reset_all_caches');` from `/theme/custom/settings.php` with `$setting->set_updatedcallback('theme_photo_update_settings_images');`.
+- Finally, replace the last method `$setting->set_updatedcallback('theme_reset_all_caches');` from `/theme/custom/settings.php` with `$setting->set_updatedcallback('theme_custom_update_settings_images');`.
 - Reinstall the theme and have a look at the settings page. You can now upload a background image for the login page.
   - Alternatively, go to `Site Administration > Appearance > Custom` **AFTER** switching to Custom theme.
