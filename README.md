@@ -231,13 +231,19 @@ $THEME->scss = function($theme) {
 ```
 - Add the following to `/theme/custom/lib.php`:
 ```
-function theme_custom_get_main_scss_content($theme) {                                                                                
+<?php
+  // Every file should have GPL and copyright in the header - we skip it in tutorials but you should not skip it for real.
+    
+  // This line protects the file from being accessed by a URL directly.                                                               
+  defined('MOODLE_INTERNAL') || die();                                                                                                
+    
+  function theme_custom_get_main_scss_content($theme) {                                                                                
     global $CFG;                                                                                                                    
- 
+  
     $scss = '';                                                                                                                     
     $filename = !empty($theme->settings->preset) ? $theme->settings->preset : null;                                                 
     $fs = get_file_storage();                                                                                                       
- 
+  
     $context = context_system::instance();                                                                                          
     if ($filename == 'default.scss') {                                                                                              
         // We still load the default preset files directly from the boost theme. No sense in duplicating them.                      
@@ -245,7 +251,7 @@ function theme_custom_get_main_scss_content($theme) {
     } else if ($filename == 'plain.scss') {                                                                                         
         // We still load the default preset files directly from the boost theme. No sense in duplicating them.                      
         $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/plain.scss');                                          
- 
+  
     } else if ($filename && ($presetfile = $fs->get_file($context->id, 'theme_custom', 'preset', 0, '/', $filename))) {              
         // This preset file was fetched from the file area for theme_custom and not theme_boost (see the line above).                
         $scss .= $presetfile->get_content();                                                                                        
@@ -253,13 +259,13 @@ function theme_custom_get_main_scss_content($theme) {
         // Safety fallback - maybe new installs etc.                                                                                
         $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');                                        
     }                                                                                                                                       
- 
+  
     return $scss;                                                                                                                   
-}
+  }
 ```
   - This will get the `scss` styling file and return it `$THEME->scss` in `/theme/custom/config.php`.
 - We will now add a setting which will allow us to upload a background image to the login page
-- Add the following code to the end of `/theme/custom/settings.php`:
+- In `/theme/custom/settings.php` replace the last line `$settings->add($page);` with:
 ```
 // Login page background setting.                                                                                               
 // We use variables for readability.                                                                                            
