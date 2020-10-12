@@ -37,6 +37,6 @@
   // We need to include a lang string for each block region.                                                                          
   $string['region-side-pre'] = 'Right';
   // Background image for login page.                                                                                                 
-$string['loginbackgroundimage'] = 'Login page background image';                                                                    
-// Background image for login page.                                                                                                 
-$string['loginbackgroundimage_desc'] = 'An image that will be stretched to fill the background of the login page.';
+  $string['loginbackgroundimage'] = 'Login page background image';                                                                     
+  // Background image for login page.                                                                                                 
+  $string['loginbackgroundimage_desc'] = 'An image that will be stretched to fill the background of the login page.';
