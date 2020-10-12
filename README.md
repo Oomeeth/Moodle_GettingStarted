@@ -1,6 +1,6 @@
 # How to extending a custom theme from Boost
 - Create a folder inside of `/themes` folder. Call it `custom`.
-- Create a script `/themes/custom/customversion.php`. This will contain information about our theme
+- Create a script `/themes/custom/version.php`. This will contain information about our theme
   - Add the following code:
     ```  
     <?php
